@@ -13,6 +13,7 @@ let factories = {};
  */
 function define(moduleName, dependencies, factory) {
   factories[moduleName] = factory;
+  factories[moduleName]['dependencies'] = dependencies;
 }
 
 /**
@@ -23,19 +24,32 @@ function define(moduleName, dependencies, factory) {
 function require(modules, callback) {
   let args = modules.map(function (module) {
     let factory = factories[module];
-    return factory();
+    if (factories[module]['dependencies']) {
+      let deps = factories[module]['dependencies'];
+      let depArgs = deps.map(function (dep) {
+        let depFn = factories[dep];
+        return depFn();
+      });
+      return factory.apply(null, depArgs);
+    } else {
+      return factory();
+    }
   });
   callback.apply(null, args);
 }
+
+define('address', [], function () {
+  return 'North Sydney';
+});
 
 define('name', [], function () {
   return 'John Doe';
 });
 
-define('age', [], function () {
-  return 9;
+define('age', ['name', 'address'], function (name, address) {
+  return name + 9 + address;
 });
 
-require(['name', 'age'], function (name, age) {
-  console.log(name, age);
+require(['age'], function (age) {
+  console.log(age);
 });
