@@ -13,7 +13,7 @@ let factories = {};
  */
 function define(moduleName, dependencies, factory) {
   factories[moduleName] = factory;
-  factory.dependencies = dependencies; // attach dependencies to the factory function
+  factories[moduleName]['dependencies'] = dependencies; // // attach dependencies to the module
 }
 
 /**
@@ -25,8 +25,9 @@ function require(modules, callback) {
   let args = modules.map(function (module) {
     let factory = factories[module];
     let exports;
-    let dependencies = factory.dependencies;
+    let dependencies = factories[module]['dependencies'];
     require(dependencies, function () {
+      // "arguments" depends on "dependencies". i.e. ['name', 'address'] --> callback function(name, address) {}
       exports = factory.apply(null, arguments);
     });
     return exports;
