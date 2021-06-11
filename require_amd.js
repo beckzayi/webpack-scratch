@@ -13,7 +13,7 @@ let factories = {};
  */
 function define(moduleName, dependencies, factory) {
   factories[moduleName] = factory;
-  factories[moduleName]['dependencies'] = dependencies;
+  factory.dependencies = dependencies; // attach dependencies to the factory function
 }
 
 /**
@@ -24,16 +24,12 @@ function define(moduleName, dependencies, factory) {
 function require(modules, callback) {
   let args = modules.map(function (module) {
     let factory = factories[module];
-    if (factories[module]['dependencies']) {
-      let deps = factories[module]['dependencies'];
-      let depArgs = deps.map(function (dep) {
-        let depFn = factories[dep];
-        return depFn();
-      });
-      return factory.apply(null, depArgs);
-    } else {
-      return factory();
-    }
+    let exports;
+    let dependencies = factory.dependencies;
+    require(dependencies, function () {
+      exports = factory.apply(null, arguments);
+    });
+    return exports;
   });
   callback.apply(null, args);
 }
