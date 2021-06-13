@@ -1,0 +1,23 @@
+{
+  "name": "webpack-scratch",
+  "version": "1.0.0",
+  "description": "",
+  "main": "a.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/beckzayi/webpack-scratch.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/beckzayi/webpack-scratch/issues"
+  },
+  "homepage": "https://github.com/beckzayi/webpack-scratch#readme",
+  "devDependencies": {
+    "@babel/parser": "^7.14.5"
+  }
+}
