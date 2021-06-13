@@ -10,7 +10,7 @@
       module.exports,
       module,
       module.exports,
-      __webpack_modules__
+      __webpack_require__
     );
     return module.exports;
   }
